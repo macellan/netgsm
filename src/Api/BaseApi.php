@@ -42,7 +42,7 @@ abstract class BaseApi
     protected function xmlRequest(string $path, array $data, string $rootElement): Response
     {
         try {
-            $response = Http::timeout(30)
+            $response = Http::timeout(10)
                 ->withBody(
                     ArrayToXml::convert($data, $rootElement, true, 'UTF-8'),
                     'application/xml'
