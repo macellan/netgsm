@@ -90,7 +90,6 @@ class SmsApiTest extends TestCase
     public function test_send_sms_http_client_exception(): void
     {
         $this->expectException(HttpClientException::class);
-        $this->expectException(\Illuminate\Http\Client\RequestException::class);
 
         $smsMessage = $this->initSmsMessage();
         Http::fake([
