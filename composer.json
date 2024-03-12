@@ -31,11 +31,11 @@
         "illuminate/notifications": "^8.0|^9.0|^10.0|^11.0",
         "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
         "illuminate/translation": "^8.0|^9.0|^10.0|^11.0",
-        "spatie/array-to-xml": "^3.0"
+        "spatie/array-to-xml": "^3.2.3"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.0|^9.0",
-        "phpunit/phpunit": "^10.0"
+        "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
+        "phpunit/phpunit": "^9.6|^10.0"
     },
     "config": {
         "sort-packages": true
