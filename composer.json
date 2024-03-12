@@ -27,14 +27,14 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "guzzlehttp/guzzle": "^7.0",
-        "illuminate/http": "^8.0|^9.0|^10.0",
-        "illuminate/notifications": "^8.0|^9.0|^10.0",
-        "illuminate/support": "^8.0|^9.0|^10.0",
-        "illuminate/translation": "^8.0|^9.0|^10.0",
+        "illuminate/http": "^8.0|^9.0|^10.0|^11.0",
+        "illuminate/notifications": "^8.0|^9.0|^10.0|^11.0",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+        "illuminate/translation": "^8.0|^9.0|^10.0|^11.0",
         "spatie/array-to-xml": "^3.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.0",
+        "orchestra/testbench": "^8.0|^9.0",
         "phpunit/phpunit": "^10.0"
     },
     "config": {
@@ -55,6 +55,6 @@
             }
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
