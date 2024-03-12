@@ -34,7 +34,7 @@
         "spatie/array-to-xml": "^3.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.0|^9.0",
+        "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
         "phpunit/phpunit": "^10.0"
     },
     "config": {
