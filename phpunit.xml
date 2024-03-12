@@ -7,8 +7,6 @@
         processIsolation="false"
         stopOnError="true"
         stopOnFailure="true"
-        cacheDirectory=".phpunit.cache"
-        cacheResult="true"
         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
 >
     <source>
