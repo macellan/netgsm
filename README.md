@@ -1,5 +1,10 @@
 # Netgsm SMS Notification Channel for Laravel
 
+![Tests](https://github.com/macellan/netgsm/workflows/Tests/badge.svg?branch=main)
+![Code Coverage Badge](./badge.svg)
+[![Latest Stable Version](https://poser.pugx.org/macellan/netgsm/v/stable)](https://packagist.org/packages/macellan/netgsm)
+[![Total Downloads](https://poser.pugx.org/macellan/netgsm/downloads)](https://packagist.org/packages/macellan/netgsm)
+
 This package makes it easy to send sms notifications using [Netgsm](https://www.netgsm.com.tr/dokuman) with Laravel 8.x, 9.x, 10.x
 
 ## Contents

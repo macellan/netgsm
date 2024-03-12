@@ -47,3 +47,9 @@ jobs:
 
       - name: Execute tests
         run: composer test
+
+      - name: Make code coverage badge
+        uses: timkrase/phpunit-coverage-badge@v1.2.1
+        with:
+          coverage_badge_path: output/coverage.svg
+          push_badge: true
