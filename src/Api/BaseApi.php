@@ -3,7 +3,6 @@
 namespace Macellan\Netgsm\Api;
 
 use Exception;
-use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -16,8 +15,6 @@ use Throwable;
 abstract class BaseApi
 {
     public const BASE_URL = 'https://api.netgsm.com.tr';
-
-    protected PendingRequest $httpClient;
 
     public function __construct(protected array $config)
     {
@@ -74,7 +71,7 @@ abstract class BaseApi
             if ($xml === false) {
                 throw new Exception;
             }
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             throw new NetgsmException(
                 sprintf('%s - Response: %s',
                     trans('netgsm::errors.xml_parse_error'),
@@ -99,7 +96,7 @@ abstract class BaseApi
                     'Content-Type' => 'application/json',
                     'Authorization' => sprintf('Basic %s', base64_encode(sprintf('%s:%s', $this->getUserName(), $this->getPassword()))),
                 ])
-                ->post($uri, $data)
+                ->$method($uri, $data)
                 ->throw();
         } catch (Throwable $e) {
             if ($e instanceof RequestException) {

@@ -61,7 +61,7 @@
         "format": "vendor/bin/pint",
         "test:style": [
             "@format",
-            "@analyze"
+            "@analyse"
         ]
     },
     "extra": {
