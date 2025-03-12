@@ -4,6 +4,7 @@ namespace Macellan\Netgsm\Api;
 
 use Exception;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Macellan\Netgsm\Exceptions\HttpClientException;
@@ -91,15 +92,20 @@ abstract class BaseApi
     protected function jsonRequest(string $method, string $uri, array $data): Response
     {
         try {
+            /** @var Response $response */
             $response = Http::timeout(10)
                 ->baseUrl(self::BASE_URL)
                 ->withHeaders([
                     'Content-Type' => 'application/json',
                     'Authorization' => sprintf('Basic %s', base64_encode(sprintf('%s:%s', $this->getUserName(), $this->getPassword())))
                 ])
-                ->$method($uri, $data)
-                ->throwUnlessStatus(406);
+                ->post($uri, $data)
+                ->throw();
         } catch (Throwable $e) {
+            if ($e instanceof RequestException) {
+                $this->checkErrors($e->response);
+            }
+
             throw new HttpClientException(trans('netgsm::errors.http_client_exception'), $e->getCode(), $e->getPrevious());
         }
 

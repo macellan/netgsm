@@ -41,7 +41,7 @@ class SmsApiTest extends TestCase
 
         $data = $this->smsApi->send($smsMessage);
 
-        $this->assertEquals(['code' => '00', 'jobid' => '123'], $data);
+        $this->assertEquals(['code' => '00', 'id' => '123', 'description' => null], $data);
     }
 
     public function test_send_sms_with_dates_and_header(): void
@@ -60,7 +60,7 @@ class SmsApiTest extends TestCase
             return ! empty($request['startdate']) && ! empty($request['stopdate']);
         });
 
-        $this->assertEquals(['code' => '00', 'jobid' => '123'], $data);
+        $this->assertEquals(['code' => '00', 'id' => '123', 'description' => null], $data);
     }
 
     public function test_send_bulk_sms_same_message_to_many_numbers(): void
@@ -79,7 +79,7 @@ class SmsApiTest extends TestCase
             return $request['messages'] === array_map(fn ($number) => ['msg' => $message, 'no' => $number], $numbers);
         });
 
-        $this->assertEquals(['code' => '00', 'jobid' => '123'], $data);
+        $this->assertEquals(['code' => '00', 'id' => '123', 'description' => null], $data);
     }
 
     public function test_send_bulk_sms_many_message_to_many_numbers(): void
@@ -103,7 +103,7 @@ class SmsApiTest extends TestCase
                 );
         });
 
-        $this->assertEquals(['code' => '00', 'jobid' => '123'], $data);
+        $this->assertEquals(['code' => '00', 'id' => '123', 'description' => null], $data);
     }
 
     public function test_send_sms_empty_number(): void

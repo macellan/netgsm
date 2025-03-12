@@ -26,8 +26,9 @@ class Sms extends BaseApi
      */
     public function send(SmsMessage $message): array
     {
-        return $this->jsonRequest('post', '/sms/rest/v2/send', $this->getRequestData($message))
-            ->json();
+        $response = $this->jsonRequest('post', '/sms/rest/v2/send', $this->getRequestData($message));
+
+        return $this->parseResponse($response);
     }
 
     /**
@@ -35,7 +36,7 @@ class Sms extends BaseApi
      */
     protected function checkErrors(Response $response): void
     {
-        $code = $response->json('code');
+        $code = $this->parseResponse($response)['code'];
 
         if ($code && in_array($code, array_keys(self::ERROR_CODES))) {
             throw new NetgsmException(
@@ -46,6 +47,15 @@ class Sms extends BaseApi
                 )
             );
         }
+    }
+
+    private function parseResponse(Response $response): array
+    {
+        return [
+            'code' => $response->json('code'),
+            'id' => $response->json('jobid'),
+            'description' => $response->json('description'),
+        ];
     }
 
     private function getRequestData(SmsMessage $message): array
