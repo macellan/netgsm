@@ -24,7 +24,7 @@ class OtpSmsApiTest extends TestCase
     private function initOtpSmsMessage(): OtpSmsMessage
     {
         return (new OtpSmsMessage('Test message'))
-            ->setNumbers(['123456']);
+            ->setNumbers([fake()->e164PhoneNumber]);
     }
 
     private function mockSendOtpSmsResponse(string $code, ?string $jobId = null, ?string $error = null): void

@@ -11,7 +11,7 @@ use Throwable;
 
 class NetgsmChannel
 {
-    protected $netgsm;
+    protected Netgsm $netgsm;
 
     /**
      * If true, will run.
