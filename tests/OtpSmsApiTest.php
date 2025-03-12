@@ -5,8 +5,8 @@ namespace Macellan\Netgsm\Tests;
 use Illuminate\Support\Facades\Http;
 use Macellan\Netgsm\Api\BaseApi;
 use Macellan\Netgsm\Api\Sms\OtpSms;
-use Macellan\Netgsm\Api\Sms\Sms;
 use Macellan\Netgsm\DTO\Sms\OtpSmsMessage;
+use Macellan\Netgsm\Exceptions\HttpClientException;
 use Macellan\Netgsm\Exceptions\NetgsmException;
 use Spatie\ArrayToXml\ArrayToXml;
 
@@ -73,6 +73,18 @@ class OtpSmsApiTest extends TestCase
         $otpSmsMessage = $this->initOtpSmsMessage();
         Http::fake([
             '*/sms/send/otp' => Http::response('Wrong data')
+        ]);
+
+        $this->otpSmsApi->send($otpSmsMessage);
+    }
+
+    public function test_send_otp_sms_http_client_exception(): void
+    {
+        $this->expectException(HttpClientException::class);
+
+        $otpSmsMessage = $this->initOtpSmsMessage();
+        Http::fake([
+            '*/sms/send/otp' => Http::response('Wrong data', 500)
         ]);
 
         $this->otpSmsApi->send($otpSmsMessage);

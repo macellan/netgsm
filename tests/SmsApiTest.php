@@ -36,7 +36,11 @@ class SmsApiTest extends TestCase
     public function test_send_sms_success(): void
     {
         $smsMessage = (new SmsMessage('Test message'))
-            ->setNumbers([fake()->e164PhoneNumber]);
+            ->setNumbers([fake()->e164PhoneNumber])
+            ->setEncoding('TR')
+            ->setIysFilter('0')
+            ->setAppName('test')
+            ->setPartnerCode('111');
         $this->mockSendSmsResponse('00', '123');
 
         $data = $this->smsApi->send($smsMessage);
