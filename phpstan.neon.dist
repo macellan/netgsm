@@ -1,0 +1,10 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+    level: 5
+    phpVersion: 80300
+    paths:
+        - src
+        - lang
+    tmpDir: build/phpstan

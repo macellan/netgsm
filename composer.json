@@ -1,6 +1,13 @@
 {
     "name": "macellan/netgsm",
     "description": "Netgsm SMS notification channel for Laravel",
+    "keywords": [
+        "macellan",
+        "netgsm",
+        "laravel",
+        "notification",
+        "sms"
+    ],
     "homepage": "https://macellan.net",
     "license": "MIT",
     "type": "library",
@@ -34,6 +41,8 @@
         "spatie/array-to-xml": "^3.2.3"
     },
     "require-dev": {
+        "laravel/pint": "^1.14",
+        "larastan/larastan": "^2.9||^3.0",
         "orchestra/testbench": "^8.0|^9.0|^10.0",
         "phpunit/phpunit": "^9.6|^10.0|^11.0|^12.0"
     },
@@ -41,9 +50,19 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
+        "test": [
+            "@test:style",
+            "@test:unit"
+        ],
+        "test:unit": "vendor/bin/phpunit",
         "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text",
-        "test:coverage:html": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html coverage"
+        "test:coverage:html": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html coverage",
+        "analyse": "vendor/bin/phpstan analyse",
+        "format": "vendor/bin/pint",
+        "test:style": [
+            "@format",
+            "@analyze"
+        ]
     },
     "extra": {
         "laravel": {
