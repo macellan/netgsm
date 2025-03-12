@@ -20,5 +20,5 @@ return [
     'http_client_exception' => 'Netgsm sunucusu ile iletişim sağlanamadı. ',
 
     'empty_message_or_number' => 'The recipient phone number or message content is not specified.',
-    'mismatched_message_count'  => 'The number of messages does not match the number of recipient phone numbers.',
+    'mismatched_message_count' => 'The number of messages does not match the number of recipient phone numbers.',
 ];

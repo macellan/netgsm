@@ -91,7 +91,7 @@ class Sms extends BaseApi
         }
 
         return array_map(
-            fn($message, $number) => ['msg' => $message, 'no' => $number],
+            fn ($message, $number) => ['msg' => $message, 'no' => $number],
             $message->getMessages(),
             $message->getNumbers(),
         );

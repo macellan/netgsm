@@ -8,7 +8,7 @@ class SmsMessage extends BaseSmsMessage
 {
     protected string $encoding = 'TR';
 
-    protected string $iysFilter = "0";
+    protected string $iysFilter = '0';
 
     protected ?string $partnerCode = null;
 

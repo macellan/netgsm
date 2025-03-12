@@ -39,6 +39,7 @@ class NetgsmChannel
 
     /**
      * Send the given notification.
+     *
      * @throws NetgsmException|Throwable
      */
     public function send($notifiable, Notification $notification): void
@@ -49,6 +50,7 @@ class NetgsmChannel
             return;
         }
 
+        /** @phpstan-ignore method.notFound */
         $message = $notification->toNetgsm($notifiable);
 
         if (! $message instanceof BaseSmsMessage) {

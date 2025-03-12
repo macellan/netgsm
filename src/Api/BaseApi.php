@@ -72,7 +72,7 @@ abstract class BaseApi
         try {
             $xml = simplexml_load_string($response->body());
             if ($xml === false) {
-                throw new Exception();
+                throw new Exception;
             }
         } catch (Throwable $e) {
             throw new NetgsmException(
@@ -97,7 +97,7 @@ abstract class BaseApi
                 ->baseUrl(self::BASE_URL)
                 ->withHeaders([
                     'Content-Type' => 'application/json',
-                    'Authorization' => sprintf('Basic %s', base64_encode(sprintf('%s:%s', $this->getUserName(), $this->getPassword())))
+                    'Authorization' => sprintf('Basic %s', base64_encode(sprintf('%s:%s', $this->getUserName(), $this->getPassword()))),
                 ])
                 ->post($uri, $data)
                 ->throw();

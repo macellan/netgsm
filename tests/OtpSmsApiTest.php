@@ -14,7 +14,7 @@ class OtpSmsApiTest extends TestCase
 {
     private OtpSms $otpSmsApi;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +40,7 @@ class OtpSmsApiTest extends TestCase
         Http::fake([
             BaseApi::BASE_URL.'/sms/send/otp' => Http::response(
                 ArrayToXml::convert($responseArr, 'xml', true, 'UTF-8')
-            )
+            ),
         ]);
     }
 
@@ -72,7 +72,7 @@ class OtpSmsApiTest extends TestCase
 
         $otpSmsMessage = $this->initOtpSmsMessage();
         Http::fake([
-            '*/sms/send/otp' => Http::response('Wrong data')
+            '*/sms/send/otp' => Http::response('Wrong data'),
         ]);
 
         $this->otpSmsApi->send($otpSmsMessage);
@@ -84,7 +84,7 @@ class OtpSmsApiTest extends TestCase
 
         $otpSmsMessage = $this->initOtpSmsMessage();
         Http::fake([
-            '*/sms/send/otp' => Http::response('Wrong data', 500)
+            '*/sms/send/otp' => Http::response('Wrong data', 500),
         ]);
 
         $this->otpSmsApi->send($otpSmsMessage);

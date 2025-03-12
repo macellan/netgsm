@@ -16,7 +16,7 @@ class SmsApiTest extends TestCase
 {
     private Sms $smsApi;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -29,7 +29,7 @@ class SmsApiTest extends TestCase
             BaseApi::BASE_URL.'/sms/rest/v2/send' => Http::response([
                 'code' => $code,
                 'jobid' => $jobId,
-            ], $status)
+            ], $status),
         ]);
     }
 
@@ -52,8 +52,8 @@ class SmsApiTest extends TestCase
     {
         $smsMessage = (new SmsMessage('Test message'))
             ->setNumbers([fake()->e164PhoneNumber])
-            ->setStartDate(new DateTime())
-            ->setStopDate(new DateTime())
+            ->setStartDate(new DateTime)
+            ->setStopDate(new DateTime)
             ->setHeader('Test Header');
 
         $this->mockSendSmsResponse('00', '123');
@@ -91,7 +91,7 @@ class SmsApiTest extends TestCase
         $messages = ['Test message 1', 'Test message 2'];
         $numbers = [fake()->e164PhoneNumber, fake()->e164PhoneNumber];
 
-        $smsMessage = (new SmsMessage())
+        $smsMessage = (new SmsMessage)
             ->setMessages($messages)
             ->setNumbers($numbers);
 
@@ -101,10 +101,10 @@ class SmsApiTest extends TestCase
 
         Http::assertSent(function (Request $request) use ($messages, $numbers) {
             return $request['messages'] === array_map(
-                    fn($message, $number) => ['msg' => $message, 'no' => $number],
-                    $messages,
-                    $numbers,
-                );
+                fn ($message, $number) => ['msg' => $message, 'no' => $number],
+                $messages,
+                $numbers,
+            );
         });
 
         $this->assertEquals(['code' => '00', 'id' => '123', 'description' => null], $data);
@@ -129,7 +129,7 @@ class SmsApiTest extends TestCase
 
         $this->expectExceptionObject($exception);
 
-        $smsMessage = (new SmsMessage())
+        $smsMessage = (new SmsMessage)
             ->setNumbers([fake()->e164PhoneNumber]);
 
         $this->mockSendSmsResponse('00', '123');
@@ -143,7 +143,7 @@ class SmsApiTest extends TestCase
 
         $this->expectExceptionObject($exception);
 
-        $smsMessage = (new SmsMessage())
+        $smsMessage = (new SmsMessage)
             ->setNumbers([fake()->e164PhoneNumber])
             ->setMessages(['Message 1', 'Message 2']);
 
