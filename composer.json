@@ -27,23 +27,23 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "guzzlehttp/guzzle": "^7.0",
-        "illuminate/http": "^8.0|^9.0|^10.0|^11.0",
-        "illuminate/notifications": "^8.0|^9.0|^10.0|^11.0",
-        "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
-        "illuminate/translation": "^8.0|^9.0|^10.0|^11.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/notifications": "^10.0|^11.0|^12.0",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/translation": "^10.0|^11.0|^12.0",
         "spatie/array-to-xml": "^3.2.3"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
-        "phpunit/phpunit": "^9.6|^10.0"
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "phpunit/phpunit": "^9.6|^10.0|^11.0|^12.0"
     },
     "config": {
         "sort-packages": true
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
-        "test:coverage": "vendor/bin/phpunit --coverage-text",
-        "test:coverage:html": "vendor/bin/phpunit --coverage-html coverage"
+        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text",
+        "test:coverage:html": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html coverage"
     },
     "extra": {
         "laravel": {

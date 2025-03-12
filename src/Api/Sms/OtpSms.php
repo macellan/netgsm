@@ -45,8 +45,7 @@ class OtpSms extends BaseApi
                 sprintf(
                     'Code: %s - Description: %s',
                     $code,
-                    trans(self::ERROR_CODES[$code]
-                    )
+                    trans(self::ERROR_CODES[$code])
                 )
             );
         }

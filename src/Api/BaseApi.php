@@ -3,6 +3,7 @@
 namespace Macellan\Netgsm\Api;
 
 use Exception;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Macellan\Netgsm\Exceptions\HttpClientException;
@@ -15,8 +16,11 @@ abstract class BaseApi
 {
     public const BASE_URL = 'https://api.netgsm.com.tr';
 
+    protected PendingRequest $httpClient;
+
     public function __construct(protected array $config)
     {
+        //
     }
 
     abstract protected function checkErrors(Response $response): void;
@@ -43,11 +47,12 @@ abstract class BaseApi
     {
         try {
             $response = Http::timeout(10)
+                ->baseUrl(self::BASE_URL)
                 ->withBody(
                     ArrayToXml::convert($data, $rootElement, true, 'UTF-8'),
                     'application/xml'
                 )
-                ->post(self::BASE_URL.$path)
+                ->post($path)
                 ->throw();
         } catch (Throwable $e) {
             throw new HttpClientException(trans('netgsm::errors.http_client_exception'), $e->getCode(), $e->getPrevious());
@@ -78,5 +83,28 @@ abstract class BaseApi
         }
 
         return $xml;
+    }
+
+    /**
+     * @throws HttpClientException
+     */
+    protected function jsonRequest(string $method, string $uri, array $data): Response
+    {
+        try {
+            $response = Http::timeout(10)
+                ->baseUrl(self::BASE_URL)
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => sprintf('Basic %s', base64_encode(sprintf('%s:%s', $this->getUserName(), $this->getPassword())))
+                ])
+                ->$method($uri, $data)
+                ->throwUnlessStatus(406);
+        } catch (Throwable $e) {
+            throw new HttpClientException(trans('netgsm::errors.http_client_exception'), $e->getCode(), $e->getPrevious());
+        }
+
+        $this->checkErrors($response);
+
+        return $response;
     }
 }

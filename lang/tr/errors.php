@@ -18,4 +18,7 @@ return [
     'invalid_netgsm_message' => 'Geçerli bir Netgsm mesajı değil',
 
     'http_client_exception' => 'Netgsm sunucusu ile iletişim sağlanamadı. ',
+
+    'empty_message_or_number' => 'Gönderilecek telefon numarası veya mesaj içeriği belirtilmemiş.',
+    'mismatched_message_count'  => 'Gönderilecek mesajların sayısı ile telefon numaralarının sayısı eşleşmiyor.',
 ];

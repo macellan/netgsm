@@ -41,7 +41,7 @@ class NetgsmChannel
      * Send the given notification.
      * @throws NetgsmException|Throwable
      */
-    public function send($notifiable, Notification $notification)
+    public function send($notifiable, Notification $notification): void
     {
         if (! $this->enable) {
             $this->log('Netgsm is disabled');
@@ -86,7 +86,7 @@ class NetgsmChannel
         }
     }
 
-    private function log(string $message, string $level = 'info', array $context = [])
+    private function log(string $message, string $level = 'info', array $context = []): void
     {
         if ($this->debug) {
             Log::log($level, $message, $context);

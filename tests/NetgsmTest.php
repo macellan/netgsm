@@ -21,11 +21,11 @@ class NetgsmTest extends TestCase
     public function test_send_sms(): void
     {
         Http::fake([
-            BaseApi::BASE_URL.'/*' => Http::response('')
+            BaseApi::BASE_URL.'/*' => Http::response([])
         ]);
 
         $smsMessage = (new SmsMessage('Test message'))
-            ->setNumbers(['123456']);
+            ->setNumbers([fake()->e164PhoneNumber]);
 
         $this->assertIsArray($this->netgsm->sendSms($smsMessage));
     }

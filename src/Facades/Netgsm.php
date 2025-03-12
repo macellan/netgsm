@@ -7,7 +7,7 @@ use Macellan\Netgsm\Netgsm as NetgsmClient;
 
 class Netgsm extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return NetgsmClient::class;
     }
