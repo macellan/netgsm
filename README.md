@@ -120,9 +120,9 @@ $smsMessage = (new SmsMessage('Netgsm test message'))
 Netgsm::sendSms($smsMessage);
 
 // Sms send - bulk sms
-$smsMessage = (new SmsMessage())
+$smsMessage = (new SmsMessage)
     ->setNumbers(['+905554443322', '+905554443333'])
-    ->setMessages('Message 1', 'Message 2');
+    ->setMessages(['Message 1', 'Message 2']);
 Netgsm::sendSms($smsMessage);
 
 // Otp Sms send
