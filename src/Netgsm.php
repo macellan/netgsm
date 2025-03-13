@@ -13,6 +13,7 @@ class Netgsm
 {
     public function __construct(private readonly array $config)
     {
+        //
     }
 
     /**
@@ -20,7 +21,7 @@ class Netgsm
      */
     public function sendSms(BaseSmsMessage $smsMessage): array
     {
-        return match(true) {
+        return match (true) {
             $smsMessage instanceof SmsMessage => (new Sms($this->config))->send($smsMessage),
             $smsMessage instanceof OtpSmsMessage => (new OtpSms($this->config))->send($smsMessage),
             default => throw new NetgsmException('Undefined message object'),

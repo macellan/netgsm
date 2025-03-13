@@ -28,9 +28,9 @@ class OtpSms extends BaseApi
      */
     public function send(OtpSmsMessage $message): array
     {
-         $response = $this->xmlRequest('/sms/send/otp', $this->getRequestData($message), 'mainbody');
+        $response = $this->xmlRequest('/sms/send/otp', $this->getRequestData($message), 'mainbody');
 
-         return $this->parseResponse($response);
+        return $this->parseResponse($response);
     }
 
     /**
@@ -45,8 +45,7 @@ class OtpSms extends BaseApi
                 sprintf(
                     'Code: %s - Description: %s',
                     $code,
-                    trans(self::ERROR_CODES[$code]
-                    )
+                    trans(self::ERROR_CODES[$code])
                 )
             );
         }

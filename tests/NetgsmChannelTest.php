@@ -14,7 +14,7 @@ class NetgsmChannelTest extends TestCase
 {
     private array $config;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class NetgsmChannelTest extends TestCase
 
         $channel = new NetgsmChannel($netgsm);
 
-        $channel->send(new TestNotifiable(), new TestSmsNotification());
+        $channel->send(new TestNotifiable, new TestSmsNotification);
 
         $netgsm->shouldHaveReceived('sendSms');
     }
@@ -49,7 +49,7 @@ class NetgsmChannelTest extends TestCase
 
         $notification = Mockery::mock(TestSmsNotification::class);
 
-        $channel->send(new TestNotifiable(), $notification);
+        $channel->send(new TestNotifiable, $notification);
 
         $notification->shouldNotHaveReceived('toNetgsm');
     }
@@ -70,7 +70,7 @@ class NetgsmChannelTest extends TestCase
             ->shouldReceive('toNetgsm')
             ->andReturn(null);
 
-        $channel->send(new TestNotifiable(), $notification);
+        $channel->send(new TestNotifiable, $notification);
         $netgsm->shouldNotHaveReceived('sendSms');
     }
 
@@ -83,7 +83,7 @@ class NetgsmChannelTest extends TestCase
 
         $channel = new NetgsmChannel($netgsm);
 
-        $channel->send(new TestNotifiable(), new TestSmsNotification());
+        $channel->send(new TestNotifiable, new TestSmsNotification);
 
         $netgsm->shouldNotHaveReceived('sendSms');
     }
@@ -99,10 +99,10 @@ class NetgsmChannelTest extends TestCase
         $netgsm = Mockery::mock(Netgsm::class, [$this->config])->makePartial();
         $netgsm
             ->shouldReceive('sendSms')
-            ->andThrow(new Exception());
+            ->andThrow(new Exception);
 
         $channel = new NetgsmChannel($netgsm);
 
-        $channel->send(new TestNotifiable(), new TestSmsNotification());
+        $channel->send(new TestNotifiable, new TestSmsNotification);
     }
 }

@@ -4,7 +4,7 @@
 [![Latest Stable Version](https://poser.pugx.org/macellan/netgsm/v/stable)](https://packagist.org/packages/macellan/netgsm)
 [![Total Downloads](https://poser.pugx.org/macellan/netgsm/downloads)](https://packagist.org/packages/macellan/netgsm)
 
-This package makes it easy to send sms notifications using [Netgsm](https://www.netgsm.com.tr/dokuman) with Laravel 8.x, 9.x, 10.x, 11.x
+This package makes it easy to send sms notifications using [Netgsm](https://www.netgsm.com.tr/dokuman) with Laravel 10.x, 11.x, 12.x
 
 ## Contents
 
@@ -101,7 +101,7 @@ use Macellan\Netgsm\Facades\Netgsm;
 use Macellan\Netgsm\DTO\Sms\SmsMessage;
 use Macellan\Netgsm\DTO\Sms\OtpSmsMessage;
 
-// Sms send
+// Sms send - single sms
 $smsMessage = (new SmsMessage('Netgsm test message'))
     ->setNumbers(['+905554443322']);
 Netgsm::sendSms($smsMessage);
@@ -109,9 +109,21 @@ Netgsm::sendSms($smsMessage);
 // return array 
 [
     'code' => '00', // Netgsm response code
-    'id' => '111111', // Bulk Id
+    'id' => '17377215342605050417149344',  // Job id,
+    'description" => 'queued',
 ]
 **/
+
+// Sms send - bulk sms with same message
+$smsMessage = (new SmsMessage('Netgsm test message'))
+    ->setNumbers(['+905554443322', '+905554443333']);
+Netgsm::sendSms($smsMessage);
+
+// Sms send - bulk sms
+$smsMessage = (new SmsMessage)
+    ->setNumbers(['+905554443322', '+905554443333'])
+    ->setMessages(['Message 1', 'Message 2']);
+Netgsm::sendSms($smsMessage);
 
 // Otp Sms send
 $otpSmsMessage = (new OtpSmsMessage('Netgsm otp test message'))

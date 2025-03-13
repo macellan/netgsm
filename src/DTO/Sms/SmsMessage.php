@@ -3,23 +3,74 @@
 namespace Macellan\Netgsm\DTO\Sms;
 
 use DateTimeInterface;
-use Macellan\Netgsm\Enums\SmsSendType;
 
 class SmsMessage extends BaseSmsMessage
 {
+    protected string $encoding = 'TR';
+
+    protected string $iysFilter = '0';
+
+    protected ?string $partnerCode = null;
+
+    protected ?string $appName = null;
+
     protected ?DateTimeInterface $startDate = null;
 
     protected ?DateTimeInterface $stopDate = null;
 
-    protected SmsSendType $type = SmsSendType::ONE_TO_MANY;
-
-    protected ?int $filter = null;
-
-    protected array $manyToData = [];
+    protected ?array $messages = null;
 
     public function __construct(?string $message = null)
     {
         $this->message = $message;
+    }
+
+    public function getEncoding(): string
+    {
+        return $this->encoding;
+    }
+
+    public function setEncoding(string $encoding): self
+    {
+        $this->encoding = $encoding;
+
+        return $this;
+    }
+
+    public function getIysFilter(): string
+    {
+        return $this->iysFilter;
+    }
+
+    public function setIysFilter(string $iysFilter): self
+    {
+        $this->iysFilter = $iysFilter;
+
+        return $this;
+    }
+
+    public function getPartnerCode(): ?string
+    {
+        return $this->partnerCode;
+    }
+
+    public function setPartnerCode(?string $partnerCode): self
+    {
+        $this->partnerCode = $partnerCode;
+
+        return $this;
+    }
+
+    public function getAppName(): ?string
+    {
+        return $this->appName;
+    }
+
+    public function setAppName(?string $appName): self
+    {
+        $this->appName = $appName;
+
+        return $this;
     }
 
     public function getStartDate(): ?DateTimeInterface
@@ -46,37 +97,14 @@ class SmsMessage extends BaseSmsMessage
         return $this;
     }
 
-    public function getType(): SmsSendType
+    public function getMessages(): ?array
     {
-        return $this->type;
+        return $this->messages;
     }
 
-    public function setType(SmsSendType $type): self
+    public function setMessages(?array $messages): self
     {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getFilter(): ?int
-    {
-        return $this->filter;
-    }
-
-    public function setFilter(?int $filter): SmsMessage
-    {
-        $this->filter = $filter;
-        return $this;
-    }
-
-    public function getManyToData(): array
-    {
-        return $this->manyToData;
-    }
-
-    public function setManyToData(array $manyToData): self
-    {
-        $this->manyToData = $manyToData;
+        $this->messages = $messages;
 
         return $this;
     }

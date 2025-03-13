@@ -5,7 +5,7 @@ namespace Macellan\Netgsm\Api\Sms;
 use Illuminate\Http\Client\Response;
 use Macellan\Netgsm\Api\BaseApi;
 use Macellan\Netgsm\DTO\Sms\SmsMessage;
-use Macellan\Netgsm\Enums\SmsSendType;
+use Macellan\Netgsm\Exceptions\InvalidSmsMessageException;
 use Macellan\Netgsm\Exceptions\NetgsmException;
 
 class Sms extends BaseApi
@@ -26,7 +26,7 @@ class Sms extends BaseApi
      */
     public function send(SmsMessage $message): array
     {
-        $response = $this->xmlRequest('/sms/send/xml', $this->getRequestData($message), 'mainbody');
+        $response = $this->jsonRequest('post', '/sms/rest/v2/send', $this->getRequestData($message));
 
         return $this->parseResponse($response);
     }
@@ -38,13 +38,12 @@ class Sms extends BaseApi
     {
         $code = $this->parseResponse($response)['code'];
 
-        if (in_array($code, array_keys(self::ERROR_CODES))) {
+        if ($code && in_array($code, array_keys(self::ERROR_CODES))) {
             throw new NetgsmException(
                 sprintf(
                     'Code: %s - Description: %s',
                     $code,
-                    trans(self::ERROR_CODES[$code]
-                    )
+                    trans(self::ERROR_CODES[$code])
                 )
             );
         }
@@ -52,60 +51,49 @@ class Sms extends BaseApi
 
     private function parseResponse(Response $response): array
     {
-        $data = explode(' ', $response->body());
-
         return [
-            'code' => $data[0],
-            'id' => $data[1] ?? '',
+            'code' => $response->json('code'),
+            'id' => $response->json('jobid'),
+            'description' => $response->json('description'),
         ];
     }
 
     private function getRequestData(SmsMessage $message): array
     {
         $data = [
-            'header' => [
-                'company' => [
-                    '_attributes' => ['dil' => $this->config['language'] ?? 'tr'],
-                    '_value' => 'Netgsm',
-                ],
-                'usercode' => $this->getUserName(),
-                'password' => $this->getPassword(),
-                'type' => $message->getType()->value,
-                'msgheader' => $message->getHeader() ?? $this->getMessageHeader(),
-                'filter' => $message->getFilter(),
-            ],
-            'body' => [],
+            'msgheader' => $message->getHeader() ?? $this->getMessageHeader(),
+            'messages' => $this->getMessagesToApiFormat($message),
+            'encoding' => $message->getEncoding(),
+            'iysfilter' => $message->getIysFilter(),
+            'partnercode' => $message->getPartnerCode(),
+            'appname' => $message->getAppName(),
+            'startdate' => $message->getStartDate()?->format('dmYHi'),
+            'stopdate' => $message->getStopDate()?->format('dmYHi'),
         ];
 
-        if ($message->getStartDate()) {
-            $data['header']['startdate'] = $message->getStartDate()->format('dmYHi');
+        return array_filter($data, function ($value) {
+            return $value !== null;
+        });
+    }
+
+    private function getMessagesToApiFormat(SmsMessage $message): array
+    {
+        if (! $message->getNumbers() || (! $message->getMessage() && ! $message->getMessages())) {
+            throw new InvalidSmsMessageException(trans('netgsm::errors.empty_message_or_number'));
         }
 
-        if ($message->getStopDate()) {
-            $data['header']['stopdate'] = $message->getStopDate()->format('dmYHi');
+        if ($message->getMessage()) {
+            return array_map(fn ($number) => ['msg' => $message->getMessage(), 'no' => $number], $message->getNumbers());
         }
 
-        if ($message->getType() === SmsSendType::ONE_TO_MANY) {
-            $data['body']['msg'] = [
-                '_cdata' => $message->getMessage(),
-            ];
-
-            $data['body']['no'] = [];
-            foreach ($message->getNumbers() as $number) {
-                $data['body']['no'][] = $number;
-            }
-        } else {
-            $data['body']['mp'] = [];
-            foreach ($message->getManyToData() as $value) {
-                $data['body']['mp'][] = [
-                    'msg' => [
-                        '_cdata' => $value['message'],
-                    ],
-                    'no' => $value['number'],
-                ];
-            }
+        if (count($message->getMessages()) !== count($message->getNumbers())) {
+            throw new InvalidSmsMessageException(trans('netgsm::errors.mismatched_message_count'));
         }
 
-        return $data;
+        return array_map(
+            fn ($message, $number) => ['msg' => $message, 'no' => $number],
+            $message->getMessages(),
+            $message->getNumbers(),
+        );
     }
 }

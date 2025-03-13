@@ -3,6 +3,7 @@
 namespace Macellan\Netgsm\Api;
 
 use Exception;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Macellan\Netgsm\Exceptions\HttpClientException;
@@ -17,6 +18,7 @@ abstract class BaseApi
 
     public function __construct(protected array $config)
     {
+        //
     }
 
     abstract protected function checkErrors(Response $response): void;
@@ -43,11 +45,12 @@ abstract class BaseApi
     {
         try {
             $response = Http::timeout(10)
+                ->baseUrl(self::BASE_URL)
                 ->withBody(
                     ArrayToXml::convert($data, $rootElement, true, 'UTF-8'),
                     'application/xml'
                 )
-                ->post(self::BASE_URL.$path)
+                ->post($path)
                 ->throw();
         } catch (Throwable $e) {
             throw new HttpClientException(trans('netgsm::errors.http_client_exception'), $e->getCode(), $e->getPrevious());
@@ -66,9 +69,9 @@ abstract class BaseApi
         try {
             $xml = simplexml_load_string($response->body());
             if ($xml === false) {
-                throw new Exception();
+                throw new Exception;
             }
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             throw new NetgsmException(
                 sprintf('%s - Response: %s',
                     trans('netgsm::errors.xml_parse_error'),
@@ -78,5 +81,33 @@ abstract class BaseApi
         }
 
         return $xml;
+    }
+
+    /**
+     * @throws HttpClientException
+     */
+    protected function jsonRequest(string $method, string $uri, array $data): Response
+    {
+        try {
+            /** @var Response $response */
+            $response = Http::timeout(10)
+                ->baseUrl(self::BASE_URL)
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => sprintf('Basic %s', base64_encode(sprintf('%s:%s', $this->getUserName(), $this->getPassword()))),
+                ])
+                ->$method($uri, $data)
+                ->throw();
+        } catch (Throwable $e) {
+            if ($e instanceof RequestException) {
+                $this->checkErrors($e->response);
+            }
+
+            throw new HttpClientException(trans('netgsm::errors.http_client_exception'), $e->getCode(), $e->getPrevious());
+        }
+
+        $this->checkErrors($response);
+
+        return $response;
     }
 }

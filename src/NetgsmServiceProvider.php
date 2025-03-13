@@ -9,13 +9,18 @@ use Macellan\Netgsm\Exceptions\InvalidConfigurationException;
 
 class NetgsmServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
+        //
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'netgsm');
+
+        $this->publishes([
+            __DIR__.'/../lang' => $this->app->langPath('vendor/netgsm'),
+        ]);
 
         $this->app->singleton(Netgsm::class, function () {
             $config = config('services.sms.netgsm');
